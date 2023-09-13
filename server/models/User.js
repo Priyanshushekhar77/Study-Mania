@@ -15,6 +15,10 @@ const userSchema = new mongoose.Schema({
         required:true,
         trim:true,
     },
+    contactNumber: {
+        type:String,
+        required:true,
+    },
     password: {
        type:String,
        required:true,
@@ -38,6 +42,12 @@ const userSchema = new mongoose.Schema({
     image: {
         type:String,
         required:true,
+    },
+    token:{
+        type:String,
+    },
+    resetPasswordExpires: {
+         type:Date,
     },
     courseProgress: [
         {
