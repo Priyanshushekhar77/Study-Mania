@@ -4,6 +4,8 @@ const otpGenerator = require("otp-generator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const mailSender = require("../utils/mailSender");
+
 
 
 
@@ -236,13 +238,56 @@ exports.login = async (req, res) => {
 };
 
 //changePassword
-//TODO: HOMEWORK
+//TODO: HOMEWORK ->DONE BY SELF
 exports.changePassword = async (req, res) => {
-    //get data from req body
+    try{
+         //get data from req body
+    const {email} = req.body;
+    const validUser = await User.findOne({email});
+    if(!validUser){
+        return res.status(401).json({
+            success:false,
+            message:"User is not registrered, please signup first",
+        });
+    }
     //get oldPassword, newPassword, confirmNewPassowrd
+    const {oldPassword, newPassword, confirmNewPassowrd} = req.body;
+
     //validation
+    if(!oldPassword || !newPassword || !confirmNewPassowrd){
+        return res.status(403). json({
+            success:false,
+            message:'All fields are required, please try again',
+        });
+    }
 
     //update pwd in DB
+    const updatedPassword = await bcrypt.hash(password, 10);
+    const updatedDetails = await User.findOneAndUpdate(
+        {email:email},//email ke according search kye hai
+       {password:updatedPassword},
+    
+        {new:true});//isse updatied document return honge response me
+
+
     //send mail - Password updated
-    //return response
+    await mailSender(email, 
+        "your password has updated",
+        "Thank you"
+        );
+//return response
+       return res.json({
+       success:true,
+       message:'Email sent successfully, please check email and change password',
+              });
+
+    }
+    catch(error) {
+        console.log(error);
+        return res.status(500).json({
+            success:false,
+            message:'Something went wrong while chamging password'
+        })
+    }  
+
 }
