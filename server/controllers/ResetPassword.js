@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const mailSender = require("../utils/mailSender");
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 
 
 //resetPasswordToken
@@ -17,13 +18,14 @@ exports.resetPasswordToken = async (req, res) => {
         });
         }
         //generate token 
-        const token  = crypto.randomUUID();
+        // const token  = crypto.randomUUID();
+        const token = crypto.randomBytes(20).toString("hex");
         //update necessary user by adding token and expiration time
         const updatedDetails = await User.findOneAndUpdate(
                                         {email:email},//email ke according search kye hai
                                         {
                                             token:token,//add kiye hai indono ko db me
-                                            resetPasswordExpires: Date.now() + 5*60*1000,
+                                            resetPasswordExpires: Date.now() + 3600000,
                                         },
                                         {new:true});//isse updatied document return honge response me
         //create url
@@ -72,7 +74,7 @@ exports.resetPassword = async (req, res) => {
             });
         }
         //token time check 
-        if( userDetails.resetPasswordExpires < Date.now()  ) {
+        if( userDetails.resetPasswordExpires > Date.now()  ) {
                 return res.json({
                     success:false,
                     message:'Token is expired, please regenerate your token',

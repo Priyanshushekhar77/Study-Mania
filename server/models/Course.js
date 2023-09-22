@@ -30,22 +30,37 @@ const CourseSchema = new mongoose.Schema({
         ref:"RatingAndReview",
     }
     ],
-    prices:{
+    price:{
         type:Number,
     },
     thumbNail:{
         type:String,
     },
     tag:{
+        type:[String],
+    },
+    category:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"Tag",
+        ref:"Category",
     },
     studentEnrolled: [{
         type:mongoose.Schema.Types.ObjectId,
         required:true,
         ref:"User",
-    }
-]
+    },
+],
+instructions:{
+    type:[String],
+},
+status:{
+    type:String,
+    enum:["Draft" , "Published"],
+},
+
+createdAt:{
+    type:Date,
+    dafault:Date.now(),
+}
 
 });
 module.exports = mongoose.model("Course",CourseSchema);

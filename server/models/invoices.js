@@ -1,13 +1,9 @@
 const mongoose=require("mongoose");
-const SectionSchema = new mongoose.Schema({
-    users: {
+const invoiceSchema = new mongoose.Schema({
+    user: {
         type:mongoose.Schema.Types.ObjectId,
         required:true,
         ref:"User",
-    },
-    courseName: {
-        type:String,
-        required:true,
     },
     courseName: {
         type:String,
@@ -27,4 +23,4 @@ const SectionSchema = new mongoose.Schema({
         ref:"Course",
     },
 });
-module.exports = mongoose.model("Section",SectionSchema);
+module.exports = mongoose.model("invoice",invoiceSchema);

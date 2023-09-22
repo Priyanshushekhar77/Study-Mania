@@ -1,8 +1,10 @@
 const jwt=require("jsonwebtoken");
 require("dotenv").config();
 const User=require("../models/User");
+//configuring dotenv to load environment variable from .env file
+dotenv.config();
 //auth
-exports.auth = async() => {
+exports.auth = async(req,res,next) => {
     try{
        //token extracting
        const token = req.cookies.token 
@@ -44,6 +46,7 @@ exports.auth = async() => {
 //isstudent
 exports.isStudent = async (req, res, next) => {
     try{
+        //const userDetails=await User.findOne({email:req.user}); if accounttype is not passed with token 
            if(req.user.accountType !== "Student") {
                return res.status(401).json({
                    success:false,
@@ -66,6 +69,7 @@ exports.isStudent = async (req, res, next) => {
 
 exports.isInstructor = async (req, res, next) => {
     try{
+         //const userDetails=await User.findOne({email:req.user}); if accounttype is not passed with token 
            if(req.user.accountType !== "Instructor") {
                return res.status(401).json({
                    success:false,
