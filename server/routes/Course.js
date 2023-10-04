@@ -1,3 +1,6 @@
+
+
+
 const express=require("express");
 const router=express.Router();
 //importing the controllers
@@ -12,8 +15,11 @@ const{showAllCategories,createCategory,categoryPageDetails} = require("../contro
 const{createSection,updateSection,deleteSection} = require("../controllers/Section")
 
 //sub-section controllers
-const{createSubSection,updateSubSection,deleteSubSection} = require("../controllers/SubSection")
-
+const {
+  createSubSection,
+  updateSubSection,
+  deleteSubSection,
+} = require("../controllers/Subsection")
 //Rating controllers
 const{createRating,getAverageRating,getAllRating} = require("../controllers/RatingAndReview")
 
@@ -26,14 +32,14 @@ const{auth,isInstructor,isStudent, isAdmin} = require("../middlewares/auth")
 // course can only be created by instructor
 router.post("/createCourse",auth,isInstructor,createCourse)
 //add a section to the course
-router.post("/createSection",auth,isInstructor,createSection)
+router.post("/addSection",auth,isInstructor,createSection)
 //update a section
 router.post("/updateSection",auth,isInstructor,updateSection)
 //delete a section
 router.post("/deleteSection",auth,isInstructor,deleteSection)
 
 //add a subsection to the course
-router.post("/createSubSection",auth,isInstructor,createSubSection)
+router.post("/addSubSection",auth,isInstructor,createSubSection)
 //update a subsection
 router.post("/updateSubSection",auth,isInstructor,updateSubSection)
 //delete a subsection
@@ -56,3 +62,4 @@ router.get("/getAverageRating",getAverageRating)
 router.get("/getReviews",getAllRating)
 
 module.exports=router;
+

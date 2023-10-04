@@ -32,8 +32,8 @@ exports.capturePayment = async (req, res) => {
         }
 
         //user already pay for the same course
-        const uid = new mongoose.Types.ObjectId(userId);//convert string type user into object
-        if(course.studentEnrolled.includes(uid)) {
+        const uid = new mongoose.Types.ObjectId(userId);
+        if(course.studentsEnrolled.includes(uid)) {
             return res.status(200).json({
                 success:false,
                 message:'Student is already enrolled',
@@ -71,7 +71,7 @@ exports.capturePayment = async (req, res) => {
             success:true,
             courseName:course.courseName,
             courseDescription:course.courseDescription,
-            thumbNail: course.thumbNail,
+            thumbnail: course.thumbnail,
             orderId: paymentResponse.id,
             currency:paymentResponse.currency,
             amount:paymentResponse.amount,
@@ -102,7 +102,7 @@ exports.verifySignature = async (req, res) => {
     if(signature === digest) {
         console.log("Payment is Authorised");
 
-        const {courseId, userId} = req.body.payload.payment.entity.notes;//options ke notes me hai jp ki razorpay ke instance me hoga;
+        const {courseId, userId} = req.body.payload.payment.entity.notes;
 
         try{
                 //fulfil the action
@@ -135,8 +135,8 @@ exports.verifySignature = async (req, res) => {
                 //mail send krdo confirmation wala 
                 const emailResponse = await mailSender(
                                         enrolledStudent.email,
-                                        "Congratulations from Study-Mania",
-                                        "Congratulations, you are onboarded into new Course",
+                                        "Congratulations from CodeHelp",
+                                        "Congratulations, you are onboarded into new CodeHelp Course",
                 );
 
                 console.log(emailResponse);
