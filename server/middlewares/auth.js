@@ -6,10 +6,10 @@ dotenv.config();
 //auth
 exports.auth = async(req,res,next) => {
     try{
-       //token extracting
+       //token extracting multiple methods
        const token = req.cookies.token 
        || req.body.token 
-       || req.header("Authorisation").replace("Bearer ", "");
+       || req.header("Authorisation").replace("Bearer ", "");//good 
 
 //if token missing, then return response
          if(!token) {
@@ -23,7 +23,7 @@ exports.auth = async(req,res,next) => {
           try{
             const decode = await jwt.verify(token, process.env.JWT_SECRET);
             console.log(decode);
-            req.user=decode; //request ke under role ko add kar diya hai user ke sath
+            req.user=decode; //request ke under role ko add kar diya hai user ke sath kyki decode ke pas token hai
           }
           catch(err){
              //verification - issue

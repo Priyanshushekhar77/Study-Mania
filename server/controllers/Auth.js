@@ -13,7 +13,7 @@ require("dotenv").config();
 
 
 //sendOTP
-exports.sendOTP = async (req, res) =>  {
+exports.sendotp = async (req, res) =>  {
 
     try {
         //fetch email from request ki body
@@ -60,7 +60,7 @@ exports.sendOTP = async (req, res) =>  {
         console.log("otpbody:", otpBody);
 
         //return response successful
-        res.status(200).json({
+         return res.status(200).json({
             success:true,
             message:'OTP Sent Successfully',
             otp,
@@ -94,7 +94,7 @@ exports.signUp = async (req, res) => {
             otp,
         } = req.body;
         //validate krlo
-        if(!firstName || !lastName || !email || !contactNumber || !password || !confirmPassword
+        if(!firstName || !lastName || !email || !contactNumber || !password || !confirmPassword ||!accountType
             || !otp) {
                 return res.status(403).json({
                     success:false,
@@ -120,8 +120,8 @@ exports.signUp = async (req, res) => {
             });
         }
 
-        //find most recent OTP stored for the user
-        const recentOtp = await OTP.find({email}).sort({createdAt:-1}).limit(1);
+        //find most recent OTP stored for the user with the help of email
+        const recentOtp = await OTP.find({email}).sort({createdAt:-1}).limit(1); //togetotp=>recentOtp.otp
         console.log(recentOtp);
         //validate OTP
         if(recentOtp.length == 0) {
@@ -139,7 +139,7 @@ exports.signUp = async (req, res) => {
         }
 
 
-        //Hash password
+        //Hash password  using bcrypt
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Create the user
@@ -228,7 +228,7 @@ exports.login = async (req, res) => {
 
             //create cookie and send response
             const options = {
-                expires: new Date(Date.now() + 3*24*60*60*1000),
+                expires: new Date(Date.now() + 1*24*60*60*1000),
                 httpOnly:true,
             }
             res.cookie("token", token, options).status(200).json({
@@ -292,7 +292,7 @@ exports.changePassword = async (req, res) => {
 
     //another mathod
 
-    //  Get user data from req.user
+    //  Get user data from req.user by finding;
 		const userDetails = await User.findById(req.user.id);
 
 	// 	 Get old password, new password, and confirm new password from req.body
@@ -313,10 +313,10 @@ exports.changePassword = async (req, res) => {
 
 
     //update pwd in DB
-    const updatedPassword = await bcrypt.hash(password, 10);
+    const updatedPassword = await bcrypt.hash(newPassword, 10);
     const updatedDetails = await User.findOneAndUpdate(
       //  {email:email},email ke according search kye hai
-      req.user.id,
+         req.user.id,//req.user.id ke according find kiye hai phir update kiye;
        {password:updatedPassword},
     
         {new:true});//isse updatied document return honge response me

@@ -94,7 +94,7 @@ exports.deleteSection = async (req, res) => {
             },
         })
 
-		// await Section.findByIdAndDelete(sectionId);
+		
 
         const section = await Section.findById(sectionId)
     console.log(sectionId, courseId)

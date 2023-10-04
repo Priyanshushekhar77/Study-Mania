@@ -76,17 +76,17 @@ exports.categoryPageDetails = async(req,res) => {
         const differentCategories = await Category.find({
             _id: {$ne: categoryId},
             })
-            let diffcatg=await Category.findOne(
-                differentCategories[getRandomInt(differentCategories.length)]
-                ._id
-            )
+            // let diffcatg=await Category.findOne(
+            //     differentCategories[getRandomInt(differentCategories.length)]
+            //     ._id
+            // )
             .populate({
                 path: "Course",
                 match: { status:"Published"},
 
             })
             .exec();
-            const allCourses = allCategories.flatMap((Category) => Category.course)
+            const allCourses = allCategories.flatMap((Category) => Category.course) //allcourses
             const mostSellCourse =  allCourses.sort((a,b) => b.sold - a.sold)
                                                .slice(0,10)
              

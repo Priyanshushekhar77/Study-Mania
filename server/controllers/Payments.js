@@ -32,7 +32,7 @@ exports.capturePayment = async (req, res) => {
         }
 
         //user already pay for the same course
-        const uid = new mongoose.Types.ObjectId(userId);
+        const uid = new mongoose.Types.ObjectId(userId);//convert string type user into object
         if(course.studentEnrolled.includes(uid)) {
             return res.status(200).json({
                 success:false,
@@ -102,7 +102,7 @@ exports.verifySignature = async (req, res) => {
     if(signature === digest) {
         console.log("Payment is Authorised");
 
-        const {courseId, userId} = req.body.payload.payment.entity.notes;
+        const {courseId, userId} = req.body.payload.payment.entity.notes;//options ke notes me hai jp ki razorpay ke instance me hoga;
 
         try{
                 //fulfil the action

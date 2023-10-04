@@ -87,7 +87,7 @@ exports.createCourse = async(req,res) => {
           );
 
           //add the new courses to upd categories
-         const updCategory =  await Category.findByIdAndUpdate(
+          await Category.findByIdAndUpdate(
 			{ _id: category },
 			{
 				$push: {

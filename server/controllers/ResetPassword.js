@@ -8,7 +8,7 @@ const crypto = require("crypto");
 //resetpasswordtoken =>reset ke liye mail send krega link ke sath
 exports.resetPasswordToken = async (req, res) => {
     try {
-        //get email from req body
+        //get email from req body new method
         const email = req.body.email;
         //check user for this email , email validation
         const user = await User.findOne({email: email});
@@ -85,7 +85,7 @@ exports.resetPassword = async (req, res) => {
 
         //password update
         await User.findOneAndUpdate(
-            {token:token},
+            {token:token},//finding using token;
             {password:hashedPassword},
             {new:true},
         );

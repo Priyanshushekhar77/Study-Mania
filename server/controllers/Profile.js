@@ -4,7 +4,7 @@ const { uploadImageToCloudinary } = require("../utils/imageUploader");
 // Method for updating a profile
 exports.updateProfile = async (req, res) => {
 	try {
-		const { dateOfBirth = "", about = "", contactNumber } = req.body;
+		const { dateOfBirth = "", about = "", contactNumber, gender } = req.body;
 		const id = req.user.id;
 
 		// Find the profile by id
@@ -15,6 +15,7 @@ exports.updateProfile = async (req, res) => {
 		profile.dateOfBirth = dateOfBirth;
 		profile.about = about;
 		profile.contactNumber = contactNumber;
+		profile.gender = gender;
 
 		// Save the updated profile
 		await profile.save();
@@ -49,7 +50,8 @@ exports.deleteAccount = async (req, res) => {
 			});
 		}
 		// Delete Assosiated Profile with the User
-		await Profile.findByIdAndDelete({ _id: user.userDetails });
+		
+		await Profile.findByIdAndDelete({ _id: user.additionalDetails });
 		// TODO: Unenroll User From All the Enrolled Courses
 		// Now Delete User
 		await user.findByIdAndDelete({ _id: id });
